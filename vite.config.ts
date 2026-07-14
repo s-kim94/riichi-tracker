@@ -7,6 +7,7 @@ import { VitePWA } from "vite-plugin-pwa";
 // https://vite.dev/config/
 export default ({ mode }: { mode: string }) =>
   defineConfig({
+    base: "/riichi-tracker/",
     plugins: [
       react(),
       babel({ presets: [reactCompilerPreset()] }),
@@ -21,11 +22,11 @@ export default ({ mode }: { mode: string }) =>
         manifest: {
           name: "Riichi Tracker",
           short_name: "Riichi Tracker",
-          start_url: "/",
+          start_url: "/riichi-tracker/",
           display: "standalone",
           background_color: "#111827",
           lang: "en",
-          scope: "/",
+          scope: "/riichi-tracker/",
           description: "Riichi Mahjong Game Tracker",
           theme_color: "#111827",
           icons: [

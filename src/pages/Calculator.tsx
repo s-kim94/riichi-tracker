@@ -568,12 +568,18 @@ function CalculatorWithGame({
 
   const rotationDeg =
     locState.t === "transfer" ? (locState.rotationDeg ?? 0) : 0;
+  const rotationSwapped = rotationDeg === 90 || rotationDeg === 270;
 
   return (
     <Rotated angle={rotationDeg}>
       <div className="flex flex-row justify-center">
         <Toaster position="top-center" />
-        <div className="h-screen w-full overflow-y-auto">
+        <div
+          className={clsx(
+            "w-full overflow-y-auto",
+            rotationSwapped ? "h-full" : "h-screen",
+          )}
+        >
           <div className="fixed top-2 left-2 z-10 flex flex-col gap-y-2 lg:top-4 lg:left-4">
             <CircleButton
               onClick={() => {

@@ -33,3 +33,9 @@ Also includes a reference for yaku and scoring.
 - Tile reference
 - Yaku reference with examples and filters
 - Scoring table and scoring formula
+
+## Credits
+
+This is a fork of [1Computer1/riichi-tracker](https://github.com/1Computer1/riichi-tracker),
+originally created by [1Computer1](https://github.com/1Computer1).
+Licensed under the [GNU AGPL-3.0](./LICENSE), same as the original.

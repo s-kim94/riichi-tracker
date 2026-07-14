@@ -26,7 +26,7 @@ export default function App() {
     <div className="min-h-screen bg-slate-200 text-black dark:bg-gray-900 dark:text-white">
       <div className="fixed top-0 right-0">
         <a
-          href="https://github.com/1Computer1/riichi-tracker"
+          href="https://github.com/s-kim94/riichi-tracker"
           target="_blank"
           rel="noopener noreferrer"
         >

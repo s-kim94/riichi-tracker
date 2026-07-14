@@ -14,5 +14,6 @@ export type CalculatorState =
       scoreRiichiSticks: boolean;
       scoreRepeatSticks: boolean;
       pao: number | null;
+      rotationDeg?: 0 | 90 | 180 | 270;
     } & ({ agari: "tsumo" } | { agari: "ron"; dealtInPlayer: number }))
   | { t: "load"; id: string };

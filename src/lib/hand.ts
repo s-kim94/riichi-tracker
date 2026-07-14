@@ -82,6 +82,15 @@ export function nextWind(w: Wind, k = 1, sanma: boolean): Wind {
   return next.toString() as Wind;
 }
 
+/**
+ * Rotation (in degrees clockwise) needed for content at a fixed four-way
+ * compass screen quadrant (ix 0 = bottom, 1 = right, 2 = top, 3 = left) to
+ * read right-side up from that seat's physical position.
+ */
+export function seatRotationDegrees(ix: number): 0 | 90 | 180 | 270 {
+  return ((360 - 90 * ix) % 360) as 0 | 90 | 180 | 270;
+}
+
 export function nextDoraTile(t: TileCode, k = 1, sanma: boolean): TileCode {
   const num = Number(t[0]) || 5;
   const suit = t[1];

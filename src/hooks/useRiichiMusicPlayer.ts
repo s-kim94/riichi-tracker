@@ -73,6 +73,7 @@ export default function useRiichiMusicPlayer(): {
   const [nowPlayingSeat, setNowPlayingSeat] = useState<number | null>(null);
   const playerRef = useRef<YTPlayer | null>(null);
   const pendingRef = useRef<{ ix: number; videoId: string } | null>(null);
+  const readyRef = useRef(false);
 
   useEffect(() => {
     const container = document.createElement("div");
@@ -87,6 +88,7 @@ export default function useRiichiMusicPlayer(): {
       playerRef.current = new YT.Player(container, {
         events: {
           onReady: () => {
+            readyRef.current = true;
             const pending = pendingRef.current;
             if (pending) {
               playerRef.current?.loadVideoById(pending.videoId);
@@ -106,6 +108,7 @@ export default function useRiichiMusicPlayer(): {
 
     return () => {
       destroyed = true;
+      readyRef.current = false;
       playerRef.current?.destroy();
       playerRef.current = null;
       container.remove();
@@ -117,14 +120,13 @@ export default function useRiichiMusicPlayer(): {
     if (!videoId) {
       return;
     }
-    if (playerRef.current) {
+    if (playerRef.current && readyRef.current) {
       playerRef.current.loadVideoById(videoId);
       playerRef.current.playVideo();
       setNowPlayingSeat(ix);
     } else {
-      // Player is still being created (loadYouTubeApi hasn't resolved yet,
-      // e.g. very first riichi of the session before the script has
-      // loaded) — queue it, and onReady above will play it once ready.
+      // Player is still being created, or constructed but not yet past its
+      // real onReady event — queue it, and onReady will play it once ready.
       pendingRef.current = { ix, videoId };
     }
   };

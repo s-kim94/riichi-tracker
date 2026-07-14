@@ -64,6 +64,11 @@ export default function ScoreDisplay({
       <div className="justify-centers flex flex-row items-center gap-x-2">
         <button
           onClick={onRiichiClick}
+          aria-label={
+            nowPlaying
+              ? `${t("compass.riichi")} - ${t("compass.nowPlaying")}`
+              : t("compass.riichi")
+          }
           className={clsx(
             "relative rounded-xl border border-gray-800 text-center text-sm shadow md:text-lg lg:text-2xl",
             vertical
@@ -81,6 +86,7 @@ export default function ScoreDisplay({
             <span
               className="absolute -top-1.5 -right-1.5 flex h-5 w-5 items-center justify-center rounded-full bg-slate-900 text-white shadow lg:h-7 lg:w-7 dark:bg-slate-100 dark:text-black"
               title={t("compass.nowPlaying")}
+              aria-hidden="true"
             >
               <HiMusicNote className="text-xs lg:text-base" />
             </span>

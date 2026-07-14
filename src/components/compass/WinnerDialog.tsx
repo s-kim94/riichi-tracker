@@ -16,11 +16,13 @@ export function WinnerDialog({
   winner,
   gameId,
   game,
+  rotationDeg = 0,
   onClose,
 }: {
   winner: number;
   gameId: string;
   game: Game;
+  rotationDeg?: 0 | 90 | 180 | 270;
   onClose: () => void;
 }) {
   const { t } = useTranslation();
@@ -52,6 +54,7 @@ export function WinnerDialog({
       scoreRiichiSticks,
       scoreRepeatSticks,
       pao: isPao ? paoPlayer : null,
+      rotationDeg,
       ...(agari.t === "tsumo"
         ? { agari: "tsumo" }
         : { agari: "ron", dealtInPlayer: agari.dealIn }),
@@ -60,7 +63,11 @@ export function WinnerDialog({
   };
 
   return (
-    <CustomDialog onClose={onClose} title={t("compass.transferPoints")}>
+    <CustomDialog
+      onClose={onClose}
+      title={t("compass.transferPoints")}
+      rotationDeg={rotationDeg}
+    >
       <div className="flex flex-col items-center justify-center gap-y-8">
         <form
           className="flex flex-col items-center justify-center gap-y-2"

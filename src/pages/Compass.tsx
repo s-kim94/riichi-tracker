@@ -14,7 +14,11 @@ import { WinnerDialog } from "../components/compass/WinnerDialog";
 import BlocksShuffleThree from "../components/loading/react-svg-spinners/BlocksShuffleThree";
 import { type Game } from "../data/interfaces";
 import useLocalStorage from "../hooks/useLocalStorage";
-import { getWindNameTranslated, nextWind } from "../lib/hand";
+import {
+  getWindNameTranslated,
+  nextWind,
+  seatRotationDegrees,
+} from "../lib/hand";
 import { type CompassState } from "../lib/states";
 import { useDb } from "../providers/DbProvider";
 
@@ -182,6 +186,7 @@ function CompassWithGame({
           gameId={locState.id}
           game={game}
           winner={winner}
+          rotationDeg={seatRotationDegrees(winner)}
           onClose={() => setWinner(null)}
         />
       )}

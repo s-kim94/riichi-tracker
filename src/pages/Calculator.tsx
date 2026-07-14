@@ -572,7 +572,12 @@ function CalculatorWithGame({
 
   return (
     <Rotated angle={rotationDeg}>
-      <div className="flex flex-row justify-center">
+      <div
+        className={clsx(
+          "flex flex-row justify-center",
+          rotationSwapped && "h-full",
+        )}
+      >
         <Toaster position="top-center" />
         <div
           className={clsx(

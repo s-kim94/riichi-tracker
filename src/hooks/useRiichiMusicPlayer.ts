@@ -77,7 +77,14 @@ export default function useRiichiMusicPlayer(): {
 
   useEffect(() => {
     const container = document.createElement("div");
-    container.style.display = "none";
+    container.style.position = "fixed";
+    container.style.top = "0";
+    container.style.left = "0";
+    container.style.width = "1px";
+    container.style.height = "1px";
+    container.style.opacity = "0";
+    container.style.overflow = "hidden";
+    container.style.pointerEvents = "none";
     document.body.appendChild(container);
 
     let destroyed = false;

@@ -1,2 +1,12 @@
 @import "tailwindcss";
 @custom-variant dark (&:where([data-theme=dark] *:not([data-theme=light])));
+
+@theme {
+  /* A dedicated breakpoint (rather than lowering `lg` itself) for the
+     compass score display, so tablets like iPad mini (744px logical
+     width in portrait) get bigger text/sizing there specifically.
+     Reusing `lg` app-wide had layout side effects elsewhere (e.g.
+     settings rows assume `lg` only ever means a spacious desktop
+     width and force a single-line layout that doesn't fit at 744px). */
+  --breakpoint-tablet: 46.5rem;
+}

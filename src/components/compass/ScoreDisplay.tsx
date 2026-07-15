@@ -98,16 +98,16 @@ export default function ScoreDisplay({
           )}
         </button>
         {playerLabel && (
-          <span
-            className={clsx(
-              "font-bold",
-              vertical
-                ? "w-9 text-center [writing-mode:vertical-rl] lg:w-14"
-                : "",
-            )}
-          >
-            {playerLabel}
-          </span>
+          <div className={clsx(vertical ? "w-9 text-center lg:w-14" : "")}>
+            <span
+              className={clsx(
+                "font-bold",
+                vertical ? "[writing-mode:vertical-rl]" : "",
+              )}
+            >
+              {playerLabel}
+            </span>
+          </div>
         )}
       </div>
       <div

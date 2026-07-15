@@ -98,7 +98,7 @@ export function NewCompassDialog({ onClose }: { onClose: () => void }) {
           <ToggleOnOff
             toggled={prefersQuick === "true"}
             onToggle={() =>
-              setPrefersQuick(prefersQuick === "true" ? "false" : "true")
+              setPrefersQuick(prefersQuick === "true" ? null : "true")
             }
           >
             {t("home.preferHanAndFuInput")}

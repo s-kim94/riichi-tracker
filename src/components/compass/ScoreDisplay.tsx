@@ -61,7 +61,12 @@ export default function ScoreDisplay({
         "items-center justify-center gap-1",
       )}
     >
-      <div className="justify-centers flex flex-row items-center gap-x-2">
+      <div
+        className={clsx(
+          "flex items-center justify-center gap-2",
+          vertical ? "flex-col" : "flex-row",
+        )}
+      >
         <button
           onClick={onRiichiClick}
           aria-label={
@@ -94,7 +99,13 @@ export default function ScoreDisplay({
         </button>
         {playerLabel && (
           <div className="rounded bg-slate-300 p-0.5 shadow lg:p-1 dark:bg-sky-900">
-            <H>{playerLabel}</H>
+            <H>
+              <span
+                className={clsx(vertical ? "[writing-mode:vertical-rl]" : "")}
+              >
+                {playerLabel}
+              </span>
+            </H>
           </div>
         )}
       </div>

@@ -458,7 +458,7 @@ function CalculatorWithGame({
 
   const [prefersQuickInit] = useLocalStorage("prefersQuick");
   const [prefersQuick, setPrefersQuick] = useState(
-    locState.t === "transfer" && prefersQuickInit,
+    locState.t === "transfer" && prefersQuickInit === "true",
   );
 
   const transferScores = async (
@@ -611,11 +611,7 @@ function CalculatorWithGame({
             )}
             <CircleButton
               onClick={() => {
-                if (prefersQuick) {
-                  setPrefersQuick(null);
-                } else {
-                  setPrefersQuick("true");
-                }
+                setPrefersQuick(!prefersQuick);
               }}
             >
               {prefersQuick ? <HiAcademicCap /> : <HiCalculator />}

@@ -1,19 +1,22 @@
 import clsx from "clsx";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { HiArrowLeft, HiArrowUp, HiCog } from "react-icons/hi";
+import { HiArrowLeft, HiArrowUp, HiCog, HiUserGroup } from "react-icons/hi";
 import { useLocation, useNavigate } from "react-router-dom";
 
 import TileButton from "../components/calculator/TileButton";
 import CircleButton from "../components/CircleButton";
 import { AdvancedDialog } from "../components/compass/AdvancedDialog";
 import { DrawDialog } from "../components/compass/DrawDialog";
+import PlayerProfilesDialog from "../components/compass/PlayerProfilesDialog";
 import ScoreDisplay from "../components/compass/ScoreDisplay";
 import { ScoreUpdateDialog } from "../components/compass/ScoreUpdateDialog";
 import { WinnerDialog } from "../components/compass/WinnerDialog";
 import BlocksShuffleThree from "../components/loading/react-svg-spinners/BlocksShuffleThree";
 import { type Game } from "../data/interfaces";
 import useLocalStorage from "../hooks/useLocalStorage";
+import usePlayerProfiles from "../hooks/usePlayerProfiles";
+import useRiichiMusicPlayer from "../hooks/useRiichiMusicPlayer";
 import {
   getWindNameTranslated,
   nextWind,
@@ -91,6 +94,10 @@ function CompassWithGame({
   const [winner, setWinner] = useState<number | null>(null);
   const [openDrawDialog, setOpenDrawDialog] = useState(false);
   const [openAdvancedDialog, setOpenAdvancedDialog] = useState(false);
+  const [openPlayerProfilesDialog, setOpenPlayerProfilesDialog] =
+    useState(false);
+  const [profiles, setProfile] = usePlayerProfiles();
+  const { nowPlayingSeat, playForSeat } = useRiichiMusicPlayer();
 
   const toggleRiichiStick = async (ix: number) => {
     if (riichi[ix]) {
@@ -105,6 +112,9 @@ function CompassWithGame({
         riichi: riichi_,
       });
     } else {
+      if (profiles[ix].youtubeUrl) {
+        playForSeat(ix, profiles[ix].youtubeUrl);
+      }
       const scores_ = scores.slice();
       scores_[ix] = scores[ix] - 1000;
       const riichi_ = riichi.slice();
@@ -129,6 +139,8 @@ function CompassWithGame({
             onScoreClick={() => setScoreUpdater(0)}
             onTileClick={() => setWinner(0)}
             onRiichiClick={() => void toggleRiichiStick(0)}
+            playerLabel={profiles[0].name || "P1"}
+            nowPlaying={nowPlayingSeat === 0}
           />
         </div>
       </div>
@@ -142,6 +154,8 @@ function CompassWithGame({
             onScoreClick={() => setScoreUpdater(1)}
             onTileClick={() => setWinner(1)}
             onRiichiClick={() => void toggleRiichiStick(1)}
+            playerLabel={profiles[1].name || "P2"}
+            nowPlaying={nowPlayingSeat === 1}
           />
         </div>
       </div>
@@ -154,6 +168,8 @@ function CompassWithGame({
             onScoreClick={() => setScoreUpdater(2)}
             onTileClick={() => setWinner(2)}
             onRiichiClick={() => void toggleRiichiStick(2)}
+            playerLabel={profiles[2].name || "P3"}
+            nowPlaying={nowPlayingSeat === 2}
           />
         </div>
       </div>
@@ -168,6 +184,8 @@ function CompassWithGame({
               onScoreClick={() => setScoreUpdater(3)}
               onTileClick={() => setWinner(3)}
               onRiichiClick={() => void toggleRiichiStick(3)}
+              playerLabel={profiles[3].name || "P4"}
+              nowPlaying={nowPlayingSeat === 3}
             />
           </div>
         </div>
@@ -203,6 +221,14 @@ function CompassWithGame({
           gameId={locState.id}
           game={game}
           onClose={() => setOpenAdvancedDialog(false)}
+        />
+      )}
+      {openPlayerProfilesDialog && (
+        <PlayerProfilesDialog
+          profiles={profiles}
+          isSanma={settings.sanma != null}
+          onProfileChange={setProfile}
+          onClose={() => setOpenPlayerProfilesDialog(false)}
         />
       )}
       <div
@@ -296,6 +322,13 @@ function CompassWithGame({
             </div>
             <CircleButton
               onClick={() => {
+                setOpenPlayerProfilesDialog(true);
+              }}
+            >
+              <HiUserGroup />
+            </CircleButton>
+            <CircleButton
+              onClick={() => {
                 setOpenAdvancedDialog(true);
               }}
             >
@@ -349,6 +382,13 @@ function CompassWithGame({
                 </CircleButton>
                 <CircleButton
                   onClick={() => {
+                    setOpenPlayerProfilesDialog(true);
+                  }}
+                >
+                  <HiUserGroup />
+                </CircleButton>
+                <CircleButton
+                  onClick={() => {
                     setOpenAdvancedDialog(true);
                   }}
                 >
@@ -365,7 +405,8 @@ function CompassWithGame({
               onScoreClick={() => setScoreUpdater(0)}
               onTileClick={() => setWinner(0)}
               onRiichiClick={() => void toggleRiichiStick(0)}
-              playerLabel="P1"
+              playerLabel={profiles[0].name || "P1"}
+              nowPlaying={nowPlayingSeat === 0}
             />
           </div>
           <div className="h-fit w-[min(70vh,70vw)]">
@@ -376,7 +417,8 @@ function CompassWithGame({
               onScoreClick={() => setScoreUpdater(1)}
               onTileClick={() => setWinner(1)}
               onRiichiClick={() => void toggleRiichiStick(1)}
-              playerLabel="P2"
+              playerLabel={profiles[1].name || "P2"}
+              nowPlaying={nowPlayingSeat === 1}
             />
           </div>
           <div className="h-fit w-[min(70vh,70vw)]">
@@ -387,7 +429,8 @@ function CompassWithGame({
               onScoreClick={() => setScoreUpdater(2)}
               onTileClick={() => setWinner(2)}
               onRiichiClick={() => void toggleRiichiStick(2)}
-              playerLabel="P3"
+              playerLabel={profiles[2].name || "P3"}
+              nowPlaying={nowPlayingSeat === 2}
             />
           </div>
           {settings.sanma == null && (
@@ -399,7 +442,8 @@ function CompassWithGame({
                 onScoreClick={() => setScoreUpdater(3)}
                 onTileClick={() => setWinner(3)}
                 onRiichiClick={() => void toggleRiichiStick(3)}
-                playerLabel="P4"
+                playerLabel={profiles[3].name || "P4"}
+                nowPlaying={nowPlayingSeat === 3}
               />
             </div>
           )}
@@ -437,6 +481,14 @@ function CompassWithGame({
           onClose={() => setOpenAdvancedDialog(false)}
         />
       )}
+      {openPlayerProfilesDialog && (
+        <PlayerProfilesDialog
+          profiles={profiles}
+          isSanma={settings.sanma != null}
+          onProfileChange={setProfile}
+          onClose={() => setOpenPlayerProfilesDialog(false)}
+        />
+      )}
     </div>
   );
 }
@@ -450,6 +502,7 @@ function ScoreDisplayInCompass({
   onTileClick,
   onRiichiClick,
   playerLabel,
+  nowPlaying,
 }: {
   game: Game;
   ix: number;
@@ -459,6 +512,7 @@ function ScoreDisplayInCompass({
   onTileClick?: () => void;
   onRiichiClick?: () => void;
   playerLabel?: string;
+  nowPlaying?: boolean;
 }) {
   const { bottomWind, scores, riichi, settings } = game;
   return (
@@ -473,6 +527,7 @@ function ScoreDisplayInCompass({
       onTileClick={onTileClick}
       onRiichiClick={onRiichiClick}
       playerLabel={playerLabel}
+      nowPlaying={nowPlaying}
     />
   );
 }

@@ -1,6 +1,7 @@
 import clsx from "clsx";
 import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { HiMusicNote } from "react-icons/hi";
 
 import { type Wind } from "../../lib/hand";
 import TileButton from "../calculator/TileButton";
@@ -13,6 +14,7 @@ export default function ScoreDisplay({
   isSanma,
   vertical = false,
   riichi = false,
+  nowPlaying = false,
   onScoreClick,
   onTileClick,
   onRiichiClick,
@@ -24,6 +26,7 @@ export default function ScoreDisplay({
   isSanma: boolean;
   vertical?: boolean;
   riichi?: boolean;
+  nowPlaying?: boolean;
   onScoreClick?: () => void;
   onTileClick?: () => void;
   onRiichiClick?: () => void;
@@ -58,11 +61,21 @@ export default function ScoreDisplay({
         "items-center justify-center gap-1",
       )}
     >
-      <div className="justify-centers flex flex-row items-center gap-x-2">
+      <div
+        className={clsx(
+          "flex items-center justify-center gap-2",
+          vertical ? "flex-col" : "flex-row",
+        )}
+      >
         <button
           onClick={onRiichiClick}
+          aria-label={
+            nowPlaying
+              ? `${t("compass.riichi")} - ${t("compass.nowPlaying")}`
+              : t("compass.riichi")
+          }
           className={clsx(
-            "rounded-xl border border-gray-800 text-center text-sm shadow md:text-lg lg:text-2xl",
+            "relative rounded-xl border border-gray-800 text-center text-sm shadow md:text-lg lg:text-2xl",
             vertical
               ? "h-40 w-9 px-1.5 py-8 lg:h-80 lg:w-14"
               : "h-9 w-40 px-8 py-1.5 lg:h-14 lg:w-80",
@@ -74,10 +87,26 @@ export default function ScoreDisplay({
           <span className={clsx(vertical ? "[writing-mode:vertical-rl]" : "")}>
             {t("compass.riichi")}
           </span>
+          {nowPlaying && (
+            <span
+              className="absolute -top-1.5 -right-1.5 flex h-5 w-5 items-center justify-center rounded-full bg-slate-900 text-white shadow lg:h-7 lg:w-7 dark:bg-slate-100 dark:text-black"
+              title={t("compass.nowPlaying")}
+              aria-hidden="true"
+            >
+              <HiMusicNote className="text-xs lg:text-base" />
+            </span>
+          )}
         </button>
         {playerLabel && (
-          <div className="rounded bg-slate-300 p-0.5 shadow lg:p-1 dark:bg-sky-900">
-            <H>{playerLabel}</H>
+          <div className={clsx(vertical ? "w-9 text-center lg:w-14" : "")}>
+            <span
+              className={clsx(
+                "font-bold",
+                vertical ? "[writing-mode:vertical-rl]" : "",
+              )}
+            >
+              {playerLabel}
+            </span>
           </div>
         )}
       </div>

@@ -27,9 +27,17 @@ export function NewCompassDialog({ onClose }: { onClose: () => void }) {
 
   const [useFourWayCompass, setUseFourWayCompass] =
     useLocalStorage("useFourWayCompass");
-  const [prefersQuick, setPrefersQuick] = useLocalStorage("prefersQuick");
+  // Deliberately local (not read from localStorage) so this always starts
+  // off when the dialog opens, rather than remembering the last game's
+  // choice — only the write below, on actually starting the game, persists
+  // it for the Calculator to read later.
+  const [prefersQuick, setPrefersQuick] = useState(false);
+  const [, setPrefersQuickStorage] = useLocalStorage("prefersQuick");
+  const [, setPlayerProfilesStorage] = useLocalStorage("playerProfiles");
 
   const submitNewCompass = async () => {
+    setPrefersQuickStorage(prefersQuick ? "true" : null);
+    setPlayerProfilesStorage(null);
     await db.setGame("$tools", {
       bottomWind: newCompassBottomWind,
       roundWind: "1",
@@ -96,10 +104,8 @@ export function NewCompassDialog({ onClose }: { onClose: () => void }) {
             {t("home.fourwayCompass")}
           </ToggleOnOff>
           <ToggleOnOff
-            toggled={prefersQuick === "true"}
-            onToggle={() =>
-              setPrefersQuick(prefersQuick === "true" ? null : "true")
-            }
+            toggled={prefersQuick}
+            onToggle={() => setPrefersQuick(!prefersQuick)}
           >
             {t("home.preferHanAndFuInput")}
           </ToggleOnOff>
